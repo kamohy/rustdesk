@@ -34,6 +34,7 @@ process before production deployment.
 
 - [Technical description and verification](docs/QUEUEFIX-DE.md)
 - [Integration into a custom Windows installer](docs/EIGENER-INSTALLER-DE.md)
+- [Upstream pull request rustdesk/rustdesk#16051](https://github.com/rustdesk/rustdesk/pull/16051)
 - [Upstream RustDesk repository](https://github.com/rustdesk/rustdesk)
 
 The queue implementation is in

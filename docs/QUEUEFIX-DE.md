@@ -61,6 +61,12 @@ Reihenfolge nicht zuverlässig ausdrücken.
 - `74dc9a2` – automatischer Build auf der Queuefix-Branch
 - `89d981a` – Erzeugung eines Windows-x64-MSI in GitHub Actions
 
+Der auf den aktuellen Upstream-Stand 1.5.0 portierte, eigenständig signierte
+Codefix wurde als [rustdesk/rustdesk#16051](https://github.com/rustdesk/rustdesk/pull/16051)
+zur Aufnahme in das offizielle Projekt eingereicht. Dieser Upstream-PR enthält
+bewusst nur `src/server/connection.rs` mit Implementierung und Tests, nicht die
+Fork-spezifische Versionierung, Dokumentation oder MSI-Pipeline.
+
 ## Automatisierte Prüfungen
 
 Die Unit-Tests in `src/server/connection.rs` prüfen:
