@@ -8,6 +8,39 @@
   <b>We need your help to translate this README, <a href="https://github.com/rustdesk/rustdesk/tree/master/src/lang">RustDesk UI</a> and <a href="https://github.com/rustdesk/doc.rustdesk.com">RustDesk Doc</a> to your native language</b>
 </p>
 
+## About this fork: bounded host-side video queue
+
+This is a public, unofficial RustDesk fork based on upstream **RustDesk 1.4.9**.
+Its test build reports version **1.4.10** and contains one focused behavioral
+change for Windows hosts serving several remote viewers at the same time.
+
+| Area | Official 1.4.9 behavior | This fork |
+| --- | --- | --- |
+| Pending host video frames | Unbounded per-connection queue | At most two pending video messages per connection |
+| New frame while a frame is waiting | Appended to the queue | Replaces the stale waiting frame |
+| Display switch | Enqueued behind older video data | Discards stale video data and is delivered before the next frame |
+| Non-video messages | Unbounded channel | Unchanged |
+
+The change prevents slow or concurrent viewers from retaining an ever-growing
+backlog of obsolete encoded frames in the host process. This is intended to
+address rapidly increasing private/committed memory and page-file pressure on
+the controlled Windows machine. It does **not** impose a viewer limit and does
+not intentionally change authentication, networking, input, clipboard, audio,
+or file transfer.
+
+The Windows MSI produced by this repository is an **unsigned test build**, not
+an official RustDesk release. Review and sign it according to your own release
+process before production deployment.
+
+- [Technical description and verification](docs/QUEUEFIX-DE.md)
+- [Integration into a custom Windows installer](docs/EIGENER-INSTALLER-DE.md)
+- [Upstream RustDesk repository](https://github.com/rustdesk/rustdesk)
+
+The queue implementation is in
+[`src/server/connection.rs`](src/server/connection.rs), and the reproducible
+Windows build is defined in
+[`build-queuefix-windows.yml`](.github/workflows/build-queuefix-windows.yml).
+
 > [!Caution]
 > **Misuse Disclaimer:** <br>
 > The developers of RustDesk do not condone or support any unethical or illegal use of this software. Misuse, such as unauthorized access, control or invasion of privacy, is strictly against our guidelines. The authors are not responsible for any misuse of the application.
@@ -179,4 +212,3 @@ Please ensure that you run these commands from the root of the RustDesk reposito
 ![File Transfer](https://github.com/rustdesk/rustdesk/assets/28412477/39511ad3-aa9a-4f8c-8947-1cce286a46ad)
 
 ![TCP Tunneling](https://github.com/rustdesk/rustdesk/assets/28412477/78e8708f-e87e-4570-8373-1360033ea6c5)
-
